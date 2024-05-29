@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registered Users</title>
+
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    }
+    .sidebar {
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        background-color: #6a11cb;
+        background-image: linear-gradient(135deg, #6a11cb, #2575fc);
+        padding-top: 1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar .nav-link {
+        color: #ffffff;
+        font-size: 1.1rem;
+    }
+    .sidebar .nav-link:hover {
+        background-color: #5a0fb0;
+        background-image: linear-gradient(135deg, #5a0fb0, #1f5bb7);
+    }
+    .content {
+        margin-left: 270px;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .alert {
+        margin-top: 1rem;
+    }
+    .text-center {
+        color: #343a40;
+    }
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+</style>
+</head>
+<body>
+<nav class="sidebar navbar-dark">
+    <a class="navbar-brand" href="#">My App</a>
+    <ul class="navbar-nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/all}">Products</a>
+        </li>
+        < rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/product-new}">Add Product</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/checkout}">Checkout Management</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="content">
+    <h1 class="text-center">Registered Users</h1>
+    <div class="alert alert-success" role="alert" th:if="${currentUser != null}">
+        <h4 class="alert-heading">Welcome, <span th:text="${currentUser}"></span>!</h4>
+        <p>We're glad to have you here. You can view and manage the registered users below.</p>
+    </div>
+    <!-- Add user management table or content here -->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

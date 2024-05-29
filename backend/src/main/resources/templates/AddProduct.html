@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Product</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 56px;
+            background-color: #f0f2f5;
+        }
+        .sidebar {
+            position: fixed;
+            top: 56px;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #6a11cb;
+            background-image: linear-gradient(135deg, #6a11cb, #2575fc);
+            padding-top: 20px;
+            color: white;
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: white;
+            display: block;
+        }
+        .sidebar a:hover {
+            color: #fff;
+            background-color: #2575fc;
+        }
+        .content {
+            margin-left: 270px;
+        }
+        .form-card {
+            border: 1px solid #ced6e0;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-card .form-group label {
+            font-weight: bold;
+            color: #2f3542;
+        }
+        .form-card .form-group input,
+        .form-card .form-group textarea,
+        .form-card .form-group select {
+            border-radius: 0;
+            border: 1px solid #dfe4ea;
+        }
+        .btn-primary {
+            background-color: #6a11cb;
+            border-color: #6a11cb;
+        }
+        .btn-primary:hover {
+            background-color: #2575fc;
+            border-color: #2575fc;
+        }
+        .navbar-dark .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .table thead th {
+            background-color: #34495e;
+            color: #ecf0f1;
+            border-color: #2c3e50;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #ecf0f1;
+        }
+        .table tbody tr:hover {
+            background-color: #dfe6e9;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="sidebar">
+        <a class="navbar-brand" th:href="@{/admin/home}" >My App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a th:href="@{/admin/all}">Products</a>
+        <a th:href="@{/admin/product-new}">Add Product</a>
+        <a th:href="@{/checkout}">Checkout Management</a>
+        <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+<div class="content">
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Add Product Form</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-card">
+                    <form th:object="${product}" th:action="@{/admin/add}" method="post">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="number" class="form-control" id="price" th:field="*{price}" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" th:field="*{quantity}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <textarea class="form-control" id="category" th:field="*{category}" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageFile">Image</label>
+                            <input type="file" class="form-control" id="imageFile" th:field="*{image}" accept="image/*">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

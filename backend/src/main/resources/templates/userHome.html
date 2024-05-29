@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* styles.css */
+
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #ddd !important;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+        }
+
+        .form-inline .form-control {
+            margin-right: 10px;
+        }
+
+        .main-content {
+            display: flex;
+            width: 100%;
+        }
+
+        .ads-left {
+            width: 200px;
+            background-color: #ddd;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            flex-grow: 1;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin: 0;
+            text-align: center;
+        }
+
+        .ads-bottom {
+            background-color: #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">My Shop</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/user/home">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/cart">View Cart</a>
+            </li>
+
+            <form th:action="@{/search}" method="get" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search by name" name="name" aria-label="Search by name">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search by category" name="category" aria-label="Search by category">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main-content">
+    <div class="ads-bottom">
+        <!-- Bottom Ad Content -->
+        <img src="resource/static/fridge.jpg" alt="Ad Image" class="img-fluid">
+        <p>Ad content here</p>
+    </div>
+
+
+    <div class="container mt-4">
+        <h2>All Products</h2>
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
+        <div class="row">
+            <div class="col-md-4" th:each="product : ${products}">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${product.name}">Product Name</h5>
+                        <img th:if="${product.image != null}" th:src="@{'/image/' + ${product.image}}" style="border-top-left-radius: 15px; border-top-right-radius: 15px;" class="img-fluid" alt="Product Image" />
+
+                        <p class="card-text" th:text="${product.description}">Product Description</p>
+                        <p class="card-text">Price: <span th:text="${product.price}">$10.00</span></p>
+                        <form th:action="@{/user/add-product}" method="post">
+                            <input type="hidden" th:value="${product.id}" name="id">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                        <!-- Eye icon for view -->
+                        <button type="button" class="btn btn-outline-secondary mt-2 view-product" data-toggle="modal" data-target="#productModal" data-id="${product.id}"><i class="fas fa-eye"></i> View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ads-bottom">
+    <!-- Bottom Ad Content -->
+    <p>Ad content here</p>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-5">
+    <div class="container">
+        <p class="text-center">© 2023 My Shop. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">Product Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addToCartBtn">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.view-product').on('click', function() {
+            var productId = $(this).data('id');
+            $.ajax({
+                url: '/product/' + productId,
+                method: 'GET',
+                success: function(data) {
+                    $('#modalContent').html(data);
+                    $('#productModal').modal('show'); // Show the modal dialog
+                },
+                error: function(error) {
+                    console.error('Error fetching product details:', error);
+                }
+            });
+        });
+
+        $('#addToCartBtn').on('click', function() {
+            // Implement add to cart functionality
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout Management</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .sidebar {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #6a11cb;
+      background-image: linear-gradient(135deg, #6a11cb, #2575fc);
+      padding-top: 20px;
+      color: white;
+    }
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      color: white;
+      display: block;
+    }
+    .sidebar a:hover {
+      color: #fff;
+      background-color: #2575fc;
+    }
+  </style>
+</head>
+<body>
+<div class="hello container my-5">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="sidebar">
+      <a class="navbar-brand" th:href="@{/admin/home}" >My App</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a th:href="@{/admin/all}">Products</a>
+      <a th:href="@{/admin/product-new}">Add Product</a>
+      <a th:href="@{/checkout}">Checkout Management</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+  <h1 class="text-center mb-4">Checkout Management</h1>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form th:action="@{/checkout/update-status}" method="post">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Customer</th>
+                  <th>Order Details</th>
+                  <th>Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cart : ${carts}">
+                  <td><input type="checkbox" name="selectedCarts" th:value="${cart.id}"></td>
+                  <td th:text="${cart.user.email}"></td>
+                  <td>
+                    <table class="table table-sm table-bordered">
+                      <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="cartItem : ${cart.cartOrders}">
+                        <td th:text="${cartItem.product.name}"></td>
+                        <td th:text="${cartItem.quantity}"></td>
+                        <td th:text="${#numbers.formatDecimal(cartItem.product.price, 1, 'COMMA', 2, 'POINT')}"></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                  <td>Total: $<span th:text="${#aggregates.sum(cart.cartOrders.![product.price * quantity])}"></span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="text-center mt-4">
+              <form th:action="@{/checkout/update-status}" method="post">
+                <input type="hidden" name="status" id="statusInput" value="DELIVERED">
+                <button type="submit" class="btn btn-success">Update Status</button>
+              </form>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $("#updateStatusBtn").click(function() {
+      // Update the hidden input field based on selected checkboxes
+      var selectedCarts = [];
+      $('input[name="selectedCarts"]:checked').each(function() {
+        selectedCarts.push($(this).val());
+      });
+
+      if (selectedCarts.length > 0) {
+        $("#statusInput").val("DELIVERED"); // Set status to DELIVERED
+      } else {
+        // Handle the case where no checkboxes are selected
+        alert("Please select at least one order.");
+        return false; // Prevent form submission
+      }
+    });
+  });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
